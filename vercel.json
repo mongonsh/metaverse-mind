@@ -1,5 +1,30 @@
 {
-  "version": 2,
-  "builds": [{ "src": "mtche_media/wsgi.py", "use": "@vercel/python" }],
-  "routes": [{ "src": "/(.*)", "dest": "mtche_media/wsgi.py" }]
+  "regions": ["hnd1"],
+  "builds": [
+    {
+      "src": "mtche_media/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.11"
+      }
+    },
+    {
+      "src": "build.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "static"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "mtche_media/wsgi.py"
+    }
+  ]
 }

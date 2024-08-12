@@ -45,7 +45,7 @@ SECRET_KEY = 'django-insecure-oebcpys%&9luzd2-rah51sgx0-k&2qhzcsh^s3g6qtr0rs&9nq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost:8000", "localhost","127.0.0.1:8000", "http://localhost:3000","https://metaverse-mind-ui.vercel.app"]
+ALLOWED_HOSTS = ["localhost:8000", "localhost","127.0.0.1:8000", "http://localhost:3000","https://metaverse-mind-ui.vercel.app", " '.vercel.app'"]
 
 
 # Application definition
