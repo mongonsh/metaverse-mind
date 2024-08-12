@@ -16,6 +16,13 @@ from mongoengine import connect
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env()
 
 # Load environment variables from .env file
 # load_dotenv()
@@ -38,7 +45,7 @@ SECRET_KEY = 'django-insecure-oebcpys%&9luzd2-rah51sgx0-k&2qhzcsh^s3g6qtr0rs&9nq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mtche-media.ap-northeast-1.elasticbeanstalk.com.', 'mtche-medias-env.eba-rtmyhyyv.ap-northeast-1.elasticbeanstalk.com', 'https://main.d1j418vox2efre.amplifyapp.com/', "localhost:8000", "localhost","127.0.0.1:8000", "http://localhost:3000"]
+ALLOWED_HOSTS = ["localhost:8000", "localhost","127.0.0.1:8000", "http://localhost:3000","https://metaverse-mind-ui.vercel.app"]
 
 
 # Application definition
@@ -70,6 +77,7 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
+    'https://metaverse-mind-ui.vercel.app'
     # Add other trusted origins as needed
 ]
 
@@ -105,17 +113,17 @@ DATABASES = {
 }
 
 connect(
-    db='vision-media',
-    username='mungunshagaitb',
-    password='article',
-    host='mongodb+srv://mungunshagaitb:article@cluster0.mr3my0q.mongodb.net/',
-    authentication_source='admin'  # If authentication is required
+    db=env('DBNAME'),
+    username=env('DBUSERNAME'),
+    password=env('DBPASSWORD'),
+    host=env('DBHOST'),
+    authentication_source=env('DBAUTH')  # If authentication is required
 )
 
 cloudinary.config(
-  cloud_name='dcjun2qnk',
-  api_key='729691214493228',
-  api_secret='Xz7T0p9sFTslaqvFHa8wv3MZH00'
+  cloud_name=env('CLOUDNAME'),
+  api_key=env('CLOUDINARYAPIKEY'),
+  api_secret=env('CLOUDINARYAPISECRET')
 )
 
 

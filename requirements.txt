@@ -19,5 +19,13 @@ sqlparse==0.5.0
 termcolor==1.1.0
 urllib3==1.26.19
 wcwidth==0.1.9
-cloudinary
-django-cloudinary-storage
+cloudinary==1.41.0
+django-cloudinary-storage==0.3.0
+## The following requirements were added by pip freeze:
+django-cors-headers==4.4.0
+dnspython==2.6.1
+mongoengine==0.28.2
+pymongo==4.8.0
+pytz==2024.1
+setuptools==72.1.0
+django-environ
