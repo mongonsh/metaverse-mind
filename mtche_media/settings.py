@@ -75,9 +75,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
+CSRF_COOKIE_HTTPONLY = False
 CSRF_TRUSTED_ORIGINS = [
+    
     'http://localhost:3000',
-    'https://metaverse-mind-ui.vercel.app'
+    'https://metaverse-mind-ui.vercel.app',
+    'https://metaverse-mind.vercel.app'
     # Add other trusted origins as needed
 ]
 
@@ -144,6 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+CORS_ALLOWED_ORIGINS = ['https://metaverse-mind-ui.vercel.app']
 
 
 # Internationalization

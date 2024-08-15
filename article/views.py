@@ -11,7 +11,7 @@ import uuid
 
 
 # from django.shortcuts import get_object_or_404
-
+@csrf_exempt
 def add(request):
     print('irsenu',request)
     if request.method =='POST':
@@ -73,6 +73,7 @@ def getArticleById(request):
     }
     return JsonResponse(data, safe=False)
 
+@csrf_exempt
 def addArticle(request):
     if request.method =='POST':
         res =json.loads(request.body)
