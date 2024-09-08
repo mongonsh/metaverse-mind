@@ -69,7 +69,8 @@ def getArticleById(request):
         'id': str(article.id),
         'title': article.title_mn,
         'content': article.content_mn,
-        'media_url': article.media_url
+        'media_url': article.media_url,
+        'category_id':article.category_id,
     }
     return JsonResponse(data, safe=False)
 
