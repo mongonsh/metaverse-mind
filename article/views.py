@@ -8,10 +8,12 @@ from .models import Categories, Articles, Image
 import json
 from cloudinary.uploader import upload
 import uuid
+from django.views.decorators.cache import cache_page
 
 
 # from django.shortcuts import get_object_or_404
 @csrf_exempt
+@cache_page(60*2)
 def add(request):
     print('irsenu',request)
     if request.method =='POST':
@@ -22,6 +24,7 @@ def add(request):
         return HttpResponse(status=201)
     return HttpResponse(status=200, content='created')
 
+@cache_page(60*2)
 def getAllCatetories(request):
     categories = Categories.objects.all()
     categories_list = []
@@ -34,6 +37,7 @@ def getAllCatetories(request):
         })
     return JsonResponse(categories_list, safe=False)
 
+@cache_page(60*2)
 def getAllArticles(request):
     request.encoding ='utf-8'
     articles = Articles.objects.all()
@@ -60,6 +64,7 @@ def getAllArticles(request):
         })
     return JsonResponse(article_list, safe=False)
 
+@cache_page(60*2)
 def getArticleById(request):
     request.encoding ='utf-8'
     id = request.GET.get('id')
@@ -75,6 +80,7 @@ def getArticleById(request):
     return JsonResponse(data, safe=False)
 
 @csrf_exempt
+@cache_page(60*2)
 def addArticle(request):
     if request.method =='POST':
         res =json.loads(request.body)
@@ -88,6 +94,7 @@ def addArticle(request):
 
 
 @csrf_exempt
+@cache_page(60*2)
 def upload_image(request):
     if request.method == 'POST':
         image = request.FILES.get('file')
