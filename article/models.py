@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.core.cache import cache
 from mongoengine import Document, StringField, DateTimeField, IntField
 import datetime
 import pytz
@@ -52,6 +53,20 @@ class Articles(Document):
         managed = False
         db_table = 'articles'
 
+def get_cached_articles():
+    # Try to retrieve articles from the cache
+    cached_articles = cache.get('articles_data')
+
+    if cached_articles is None:
+        # If not cached, fetch data from MongoDB
+        articles = Articles.objects.all()
+
+        # Cache the query result for 15 minutes
+        cache.set('articles_data', list(articles), timeout=60*15)
+
+        return articles
+
+    return cached_articles
 
 class Categories(Document):
     name = StringField(max_length=100, blank=True, null=True)
@@ -61,6 +76,15 @@ class Categories(Document):
     class Meta:
         managed = False
         db_table = 'categories'
+
+def get_cached_categories():
+    cached_categories = cache.get('categories_data')
+    if cached_categories is None:
+        categories = Categories.objects.all()
+        cache.set('categories_data', list(categories), timeout=60*15)
+        return categories
+    return cached_categories
+
 
 
 class Impression(Document):
@@ -102,3 +126,21 @@ class Social(Document):
 class Image(Document):
     media_id = StringField(max_length=500)
     media_url = StringField(max_length=500)
+
+class Counter(Document):
+    name = StringField(required=True, unique=True)
+    current_id = IntField(default=0)
+
+# Main model for your document
+class MyMongoDocument(Document):
+    id = IntField(primary_key=True)
+    name = StringField(required=True)
+
+def get_next_id():
+    # Find the counter document for your specific collection
+    counter = Counter.objects(name='my_mongo_document_id').modify(
+        upsert=True,  # Create the counter document if it doesn't exist
+        new=True,     # Return the updated document
+        inc__current_id=1  # Increment the current_id by 1
+    )
+    return counter.current_id

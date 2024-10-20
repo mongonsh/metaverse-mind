@@ -4,11 +4,12 @@ from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
-from .models import Categories, Articles, Image
+from .models import Categories, Articles, Image, get_cached_articles, get_cached_categories
 import json
 from cloudinary.uploader import upload
 import uuid
 from django.views.decorators.cache import cache_page
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 # from django.shortcuts import get_object_or_404
@@ -26,7 +27,7 @@ def add(request):
 
 @cache_page(60*2)
 def getAllCatetories(request):
-    categories = Categories.objects.all()
+    categories = get_cached_articles()
     categories_list = []
    
     for category in categories:
@@ -40,7 +41,7 @@ def getAllCatetories(request):
 @cache_page(60*2)
 def getAllArticles(request):
     request.encoding ='utf-8'
-    articles = Articles.objects.all()
+    articles = get_cached_articles()
     
     article_list = []
     for article in articles:
@@ -115,3 +116,8 @@ def upload_image(request):
 def get_csrf_token(request):
     token = get_token(request)
     return JsonResponse({'csrfToken': token})
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    # Optionally, you can customize this view if needed
+    pass
